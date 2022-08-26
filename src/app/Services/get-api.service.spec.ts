@@ -1,5 +1,5 @@
 import { inject, TestBed } from '@angular/core/testing';
-import {HttpClientTestingModule,HttpTestingController} from '@angular/common/http/testing';
+import {HttpClientTestingModule,HttpTestingController,} from '@angular/common/http/testing';
 import { GetApiService } from 'src/app/Services/get-api.service';
 
 describe('Services', () => {
@@ -9,7 +9,8 @@ describe('Services', () => {
   let postExpectedData: any;
   let getUrl: any = 'https://localhost:44369/api/API_Revision/Get_Student';
   let postUrl: any = 'https://localhost:44369/api/API_Revision/Add_Student';
-  let deleteUrl:any="https://localhost:44369/api/API_Revision/Delete_Student";
+  let deleteUrl: any =
+    'https://localhost:44369/api/API_Revision/Delete_Student';
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
@@ -21,9 +22,7 @@ describe('Services', () => {
       { student_Name: 'Rahul', student_Age: 23 },
       { student_Name: 'Pradeep', student_Age: 25 },
     ];
-    postExpectedData=[
-      { student_Name: 'Rahul', student_Age: 23 }
-    ]
+    postExpectedData = [{ student_Name: 'Rahul', student_Age: 23 }];
   });
 
   it('should be created', () => {
@@ -72,65 +71,63 @@ describe('Services', () => {
     expect(error).toBeTruthy();
   });
 
+  //------------------------------- POST METHOD TESTING----------------------------------------
 
-//------------------------------- POST METHOD TESTING----------------------------------------
-
-it("Should call POST API to create a new object", () => {
-  dataService.postApi(postExpectedData).subscribe();
-  let req = httpController.expectOne({ method: "POST", url: postUrl });
-  expect(req.request.body).toEqual(postExpectedData);
-});
-
-it('#PostApi should use post the data', () => {
-  dataService.postApi(postExpectedData).subscribe();
-  const testRequest = httpController.expectOne({
-    method: 'POST',
-    url: postUrl,
-  });
-  expect(testRequest.request.method).toEqual('POST');
-});
-
-it('Post method should throw error', () => {
-  let error: any;
-  dataService.postApi(postExpectedData).subscribe({
-    next: (data) => {},
-    error: (err) => {
-      error = err;
-    },
+  it('Should call POST API to create a new object', () => {
+    dataService.postApi(postExpectedData).subscribe();
+    let req = httpController.expectOne({ method: 'POST', url: postUrl });
+    expect(req.request.body).toEqual(postExpectedData);
   });
 
-  const req = httpController.expectOne({
-    method: 'POST',
-    url: postUrl,
-  });
-  req.flush('Something went wrong', {
-    status: 404,
-    statusText: 'Network error',
-  });
-  expect(error).toBeTruthy();
-});
-
-//------------------------------- DELETE METHOD TESTING----------------------------------------
-
-it('Delete method should throw error', () => {
-  let error: any;
-  let Id:number=2;
-  dataService.deleteApi(Id).subscribe({
-    next: (data) => {},
-    error: (err) => {
-      error = err;
-    },
+  it('#PostApi should use post the data', () => {
+    dataService.postApi(postExpectedData).subscribe();
+    const testRequest = httpController.expectOne({
+      method: 'POST',
+      url: postUrl,
+    });
+    expect(testRequest.request.method).toEqual('POST');
   });
 
-  const req = httpController.expectOne({
-    method: 'DELETE',
-    url: `${deleteUrl}?Id=${Id}`,
-  });
-  req.flush('Something went wrong', {
-    status: 404,
-    statusText: 'Network error',
-  });
-  expect(error).toBeTruthy();
-});
+  it('Post method should throw error', () => {
+    let error: any;
+    dataService.postApi(postExpectedData).subscribe({
+      next: (data) => {},
+      error: (err) => {
+        error = err;
+      },
+    });
 
+    const req = httpController.expectOne({
+      method: 'POST',
+      url: postUrl,
+    });
+    req.flush('Something went wrong', {
+      status: 404,
+      statusText: 'Network error',
+    });
+    expect(error).toBeTruthy();
+  });
+
+  //------------------------------- DELETE METHOD TESTING----------------------------------------
+
+  it('Delete method should throw error', () => {
+    let error: any;
+    let Id: number = 2;
+    dataService.deleteApi(Id).subscribe({
+      next: (data) => {},
+      error: (err) => {
+        error = err;
+      },
+    });
+
+    const req = httpController.expectOne({
+      method: 'DELETE',
+      url: `${deleteUrl}?Id=${Id}`,
+    });
+    req.flush('Something went wrong', {
+      status: 404,
+      statusText: 'Network error',
+    });
+    expect(error).toBeTruthy();
+  });
 });
