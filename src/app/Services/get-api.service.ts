@@ -8,15 +8,19 @@ import { getDataInterface } from 'src/Interfaces/getApiInterface';
   providedIn: 'root'
 })
 export class GetApiService {
-
   constructor(private http:HttpClient) { }
   public getURL="https://localhost:44369/api/API_Revision/Get_Student";
   public postURL="https://localhost:44369/api/API_Revision/Add_Student";
   public deleteURL="https://localhost:44369/api/API_Revision/Delete_Student";
   
-  getApi(): Observable<any>
+  // getApi(): Observable<getDataInterface>
+  // {
+  //   return this.http.get<getDataInterface>(this.getURL);
+  // }
+
+  getApi()
   {
-    return this.http.get<getDataInterface>(this.getURL);
+    return this.http.get(this.getURL);
   }
 
   postApi(Data:any): Observable<any>
@@ -25,12 +29,6 @@ export class GetApiService {
   }
 
   deleteApi(Id: number): Observable<any> {
-    return this.http.delete(`${this.deleteURL}?Id=${Id}`).pipe(
-      catchError((error: HttpErrorResponse) => {
-        return throwError(
-          `Error deleting data. ${error.statusText || "Unknown"} `
-        );
-      })
-    );
+    return this.http.delete(`${this.deleteURL}?Id=${Id}`);
   }
 }

@@ -10,7 +10,8 @@ import { getDataInterface } from 'src/Interfaces/getApiInterface';
 export class GetApiComponent implements OnInit {
 
   Title='Get Api';
-  GetData:any;
+  GetData:any=[];
+  ConnectionApi:any;
   getError:any;
   checkApi:any;
   returnedData:any;
@@ -21,8 +22,9 @@ export class GetApiComponent implements OnInit {
   constructor(private service:GetApiService) {}
    
   ngOnInit(): void {
-    this.connection=this.service.getApi();
+    this.ConnectionApi=this.service.getApi();
     this.callGetApi();
+    
     setTimeout(() => {
             console.log("Data",this.GetData);
     }, 1000);
@@ -30,9 +32,12 @@ export class GetApiComponent implements OnInit {
   }
 
   callGetApi(){
-    this.service.getApi().subscribe({
+     this.service.getApi().subscribe({
+      
       next:data=>{
-        this.GetData  =data;
+        this.GetData = data  as getDataInterface;
+        //this.GetData = data;
+        
       },
       error:err=>{
         this.getError = err;
@@ -48,7 +53,7 @@ export class GetApiComponent implements OnInit {
     console.log("callDeleteApi Id:",Id);
     this.service.deleteApi(Id).subscribe({
       next:data=>{
-        this.deleteData = data;
+        this.callGetApi();
         console.log("callDeleteApi data:",this.deleteData);
       },
       error:err=>{

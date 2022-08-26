@@ -77,7 +77,6 @@ describe('Services', () => {
 
 it("Should call POST API to create a new object", () => {
   dataService.postApi(postExpectedData).subscribe();
- debugger;
   let req = httpController.expectOne({ method: "POST", url: postUrl });
   expect(req.request.body).toEqual(postExpectedData);
 });

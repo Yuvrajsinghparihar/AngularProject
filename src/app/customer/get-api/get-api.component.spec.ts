@@ -1,11 +1,12 @@
-import {ComponentFixture, fakeAsync, inject, TestBed } from '@angular/core/testing';
+import {ComponentFixture, fakeAsync, inject, TestBed ,tick} from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController  } from '@angular/common/http/testing';
 import { GetApiService } from 'src/app/Services/get-api.service';
 import { GetApiComponent } from './get-api.component';
 import { RouterTestingModule } from '@angular/router/testing';
 import { of } from 'rxjs';
 import { delay } from 'rxjs/operators';
-
+import * as Rx from 'rxjs';
+import { getDataInterface } from 'src/Interfaces/getApiInterface';
 
 describe('GetApiComponent', () => {  
 
@@ -36,24 +37,55 @@ describe('GetApiComponent', () => {
     dataService = TestBed.inject(GetApiService);
   });
 
-  it('It should the callGetApi() function and return response',fakeAsync(() => {
-    let getService=fixture.debugElement.injector.get(GetApiService);
-    let stub=spyOn(getService,"getApi").and.callFake(() => {
-      return of([
-        { student_Name: 'Rahul', student_Age: 23 },
-        { student_Name: 'Pradeep', student_Age: 25 }
-      ]).pipe(delay(300));
-    });
-    component.callGetApi();
-    //expect(component.GetData).toEqual(true);
-    expect(component.GetData).toEqual({ student_Name: 'Rahul', student_Age: 23 });
-
-  }));
-
   it('should create', () => {
     expect(component).toBeDefined();
   });
 
+  it('It should call callGetApi method', () => {
+   component =fixture.componentInstance;
+   spyOn(component, 'callGetApi'); 
+   component.ngOnInit();
+   expect(component.callGetApi).toHaveBeenCalled();
+  });
+
+  it('It should call callGetApi and get response as empty array', fakeAsync(() => {
+    const spy_Service = fixture.debugElement.injector.get(GetApiService);
+    spyOn(spy_Service,"getApi").and.callFake(() => {
+      return of([]);
+    });
+    component.callGetApi();
+    tick(100);
+    expect(component.GetData).toEqual([]);
+  }))
+
+  it('It should call callGetApi and get response as array', fakeAsync(() => {
+    const spy_Service = fixture.debugElement.injector.get(GetApiService);
+    spyOn(spy_Service,"getApi").and.callFake(() => {
+      return of([
+              { student_Name: 'Rahul', student_Age: 23 },
+              { student_Name: 'Pradeep', student_Age: 25 }
+            ]);
+    });
+    component.callGetApi();
+    tick(1000);
+    expect(component.GetData).toEqual([
+      { student_Name: 'Rahul', student_Age: 23 },
+      { student_Name: 'Pradeep', student_Age: 25 }
+    ] );
+  }))
+
+  it('It should compare the length', fakeAsync(() => {
+    const spy_Service = fixture.debugElement.injector.get(GetApiService);
+    spyOn(spy_Service,"getApi").and.callFake(() =>  {
+      return of([
+              { student_Name: 'Rahul', student_Age: 23 },
+              { student_Name: 'Pradeep', student_Age: 25 }
+            ]) ;
+    });
+    component.callGetApi();
+    tick(1000);
+    expect(component.GetData.length).toEqual(2);
+  }))
 
   it('It should create the object of component', () => {
     expect(component).toBeTruthy();
@@ -64,50 +96,6 @@ describe('GetApiComponent', () => {
     const compiled = fixture.debugElement.nativeElement;
     expect(compiled.querySelector('h1').textContent).toContain('Get-API Works!');
   });
-
-
-  // it('It should provide exact number of count', () => {
-    
-  //   expect(component.GetData.length).toEqual(2);
-  // });
-
-
-  // it("should return data", () => {
-  //   let result: any;
-  //   dataService.getApi().subscribe(data => {
-  //     result = data;
-  //   });
-  //   const req = httpController.expectOne({
-  //     method: "GET",
-  //     url: getUrl
-  //   });
-   
-  //   req.flush([expectedData]);
-   
-  //   expect(result[0]).toEqual(expectedData);
-  // });
-
-
-  // it("should throw error", () => {
-  //   let error: any;
-  //   dataService.getApi().subscribe({
-  //     next:data=>{},
-  //     error:err=>{
-  //       error = err;
-  //     }});
-   
-  //     const req = httpController.expectOne({
-  //       method: "GET",
-  //       url: getUrl
-  //     });
-  //   req.flush("Something went wrong", {
-  //     status: 404,
-  //     statusText: "Network error"
-  //   });
-  //   expect(error).toBeTruthy();
-  // });
-
-
 
 
 });
