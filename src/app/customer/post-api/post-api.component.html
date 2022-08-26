@@ -1,0 +1,22 @@
+<h1>Post-API Works!</h1>
+
+<!-- <form  #basicForm="ngForm" (ngSubmit)="PostData(basicForm.value)">
+    <input type="text" ngModel name="student_Name" placeholder="Enter your name">
+    <br> <br>
+    <input type="number" ngModel name="student_Age" placeholder="Enter your age">
+    <br> <br>
+    <button  >Submit</button>
+</form> -->
+<form Id="FormSection" [formGroup]="FormSection" (ngSubmit)="callingFunction()">
+
+    <label>
+      First Name:
+      <input type="text" formControlName="student_Name">
+    </label>
+
+  <label>
+      Age:
+      <input type="text" formControlName="student_Age">
+    </label>
+    <br> <br>
+  <button type="submit" [disabled]="!FormSection.valid">Submit</button>

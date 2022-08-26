@@ -1,0 +1,12 @@
+<h1>Get-API Works!</h1>
+<div >
+    <table style="border:auto ;padding:auto;margin: auto;background-color: aqua;">
+        <tr *ngFor="let item of GetData">
+           <td>{{item.student_Name }}</td>
+           <td>{{item.student_Age }}</td>
+           <button style="color: red;"  (click)="callDeleteApi(item.student_Id)">Delete</button>           
+        </tr>
+    </table>
+    
+</div>
+ 
