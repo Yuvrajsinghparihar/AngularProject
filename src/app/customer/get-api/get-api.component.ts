@@ -35,9 +35,8 @@ export class GetApiComponent implements OnInit {
      this.service.getApi().subscribe({
       
       next:data=>{
-        this.GetData = data  as getDataInterface;
-        //this.GetData = data;
-        
+        this.GetData = data  as getDataInterface; 
+        console.log("callGetApi data:",this.GetData);       
       },
       error:err=>{
         this.getError = err;
@@ -54,9 +53,11 @@ export class GetApiComponent implements OnInit {
     this.service.deleteApi(Id).subscribe({
       next:data=>{
         this.callGetApi();
+        this.deleteData=data;
         console.log("callDeleteApi data:",this.deleteData);
       },
       error:err=>{
+        this.callGetApi();
         this.getDeleteError = err;
         console.log("callDeleteApi error:",this.getDeleteError);
       },
@@ -66,6 +67,8 @@ export class GetApiComponent implements OnInit {
     });
     
   }
+
+  
 
   
 

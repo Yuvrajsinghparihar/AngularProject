@@ -10,24 +10,38 @@ import { FormControl, FormGroup } from '@angular/forms'
 export class PostApiComponent implements OnInit {
 
   Title="Post Api";
+  Result:any=[];
+  postData:any;
   Submitted:boolean=false;
   FormSection = new FormGroup({
     student_Name: new FormControl('',Validators.required),
     student_Age: new FormControl('',Validators.required)
   });
+  getError: any;
   constructor(private service:GetApiService) { }
 
   callingFunction() {
     this.Submitted=true;
-    this.service.postApi(this.FormSection.value).subscribe((result)=>{})}
+    if(this.FormSection.value.student_Name.length != '')
+    {
+      this.service.postApi(this.FormSection.value).subscribe({ 
+        next:data=>{
+          this.Result = data; 
+          console.log("callGetApi data:",this.FormSection.value);       
+        },
+        error:err=>{
+          this.getError = err;
+          console.log("getError data:",this.FormSection.value);  
+        },
+        complete:()=>{
+          console.log("GetApi method finished");
+        }
+      });
+    }
+ }
 
-  ngOnInit(): void {}
-
-  // PostData(data:any)
-  // {
-  //   this.service.postApi(data).subscribe((result)=>{
-  //     console.log(result);
-  //   })
-  // }
+  ngOnInit(): void {
+    this.callingFunction();   
+  }
 
 }

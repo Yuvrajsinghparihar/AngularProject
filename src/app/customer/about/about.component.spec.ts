@@ -21,24 +21,10 @@ describe('AboutComponent', () => {
    //Exceptions
    
    it('Compiling functionTest goes as expected',()=>{
-
     //Working
-    expect(() => component.functionTesting()).toThrow();
-    expect(() => component.functionTesting()).toThrow('You are using old Angular');
-
-
-    //expect(() => component.functionTesting()).toThrow();
-    //expect(() => component.functionTesting()).toThrow(Error);
-
-    // //Exact error message or regexp
-    //expect(() => component.functionTesting()).toThrow('You are using old Angular');
-    expect(() => component.functionTesting()).toThrow(/old/);
-
+    expect(() => component.functionTesting()).toThrow();   
    }),
     
-
-
-
   //Test Array
   it('Use of tomatch', () => {
     let Names = ["Dharmraj","Rahul","Somesh","Puran"];

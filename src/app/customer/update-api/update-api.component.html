@@ -1,1 +1,20 @@
 <p>update-api works!</p>
+<form Id="FormSection" [formGroup]="FormSection" (ngSubmit)="callingFunction()">
+    <label>
+      First Name:
+      <input type="text" formControlName="student_Name" placeholder="Enter student name">
+    </label>
+    <br> <br>
+  <label>
+      Age:
+      <input type="text"  formControlName="student_Age" placeholder="Enter student age">
+    </label>
+    <br> <br>
+    <label>
+        Id:
+        <input type="text"  formControlName="student_Id" placeholder="Enter student id">
+      </label>
+    <br> <br>
+  <button type="submit" [disabled]="!FormSection.valid">Submit</button>
+
+</form>

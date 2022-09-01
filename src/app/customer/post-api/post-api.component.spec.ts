@@ -1,12 +1,11 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { from } from 'rxjs';
+import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { from, of } from 'rxjs';
 import { PostApiComponent } from './post-api.component';
 import {BrowserModule, By} from '@angular/platform-browser';
 import {FormGroup, FormsModule,ReactiveFormsModule} from '@angular/forms';
 import { DebugElement } from '@angular/core';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { GetApiService } from 'src/app/Services/get-api.service';
-//import {UserServiceMock} from '../../mocks/user.service.mock';
 
 describe('PostApiComponent', () => {
   let component: PostApiComponent;
@@ -25,7 +24,7 @@ describe('PostApiComponent', () => {
 
   beforeEach(() => {
     fixture = TestBed.createComponent(PostApiComponent);
-    component = fixture.componentInstance;
+    component = fixture.debugElement.componentInstance;
     fixture.detectChanges();
   });
 
@@ -45,8 +44,8 @@ describe('PostApiComponent', () => {
   });
 
   it('form should be valid', () => {
-    component.FormSection.controls['student_Name'].setValue("xyz");
-    component.FormSection.controls['student_Age'].setValue('23');
+    component.FormSection.controls['student_Name'].setValue("Rahul");
+    component.FormSection.controls['student_Age'].setValue(23);
     expect(component.FormSection.valid).toBeTruthy();
   });
 
@@ -58,9 +57,13 @@ describe('PostApiComponent', () => {
   it('should call the callingFunction method', () => {
     fixture.detectChanges();
     spyOn(component,'callingFunction');
-    el=fixture.debugElement.query(By.css('button')).nativeElement;
-    el.click();
-    expect(component.callingFunction()).toHaveBeenCalledTimes(0);
+    component.ngOnInit();
+    expect(component.callingFunction).toHaveBeenCalled();
+  });
+
+  it('Name field validity', () => {
+    let email = component.FormSection.controls['student_Name']; 
+    expect(email.valid).toBeFalsy(); 
   });
 
 });

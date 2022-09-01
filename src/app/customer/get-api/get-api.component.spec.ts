@@ -4,9 +4,7 @@ import { GetApiService } from 'src/app/Services/get-api.service';
 import { GetApiComponent } from './get-api.component';
 import { RouterTestingModule } from '@angular/router/testing';
 import { of } from 'rxjs';
-import { delay } from 'rxjs/operators';
-import * as Rx from 'rxjs';
-import { getDataInterface } from 'src/Interfaces/getApiInterface';
+
 
 describe('GetApiComponent', () => {
   let httpController: HttpTestingController;
@@ -96,4 +94,26 @@ describe('GetApiComponent', () => {
       'Get-API Works!'
     );
   });
+
+  it('It should call callDeleteApi and get response as empty array', fakeAsync(() => {
+    const spy_Service = fixture.debugElement.injector.get(GetApiService);
+    spyOn(spy_Service, 'deleteApi').and.callFake(() => {
+      return of([]);
+    });
+    component.callDeleteApi(1);
+    tick(100);
+    expect(component.deleteData).toEqual([]);
+  }));
+
+
+  it('It should call callDeleteApi and get response as array', fakeAsync(() => {
+    const spy_Service = fixture.debugElement.injector.get(GetApiService);
+    spyOn(spy_Service, 'deleteApi').and.callFake(() => {
+      return of(1);
+    });
+    component.callDeleteApi(1);
+    tick(1000);
+    expect(component.deleteData).toEqual(1);
+  }));
+
 });
